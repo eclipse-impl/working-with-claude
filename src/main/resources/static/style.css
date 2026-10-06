@@ -2,7 +2,8 @@
  * Marlowe & Finch operations dashboard.
  *
  * Every colour is a variable, set per theme by data-theme on <html> (TODO-231). Dark is
- * the default, so it is also what :root gets before app.js has applied a stored choice.
+ * the default: index.html declares it, an inline script in <head> swaps in a stored
+ * choice before the first paint, and :root falls back to dark if the attribute is missing.
  * The SVG charts use these variables through their classes; app.js holds no colours.
  */
 
