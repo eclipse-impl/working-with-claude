@@ -13,6 +13,8 @@
   var DEFAULT_PRESET_DAYS = 30;
   var LATE_LIMIT = 20;
   var SVG_NS = 'http://www.w3.org/2000/svg';
+  var THEME_KEY = 'ops-theme';
+  var DEFAULT_THEME = 'dark';
 
   // ---------- API client ----------
 
@@ -102,6 +104,11 @@
     return Math.round((parseIso(iso) - parseIso(today)) / 86400000);
   }
 
+  /** The theme the toggle switches to: light from dark, dark from anything else. */
+  function nextTheme(theme) {
+    return theme === 'dark' ? 'light' : 'dark';
+  }
+
   // ---------- App ----------
 
   function initApp(document, fetchImpl) {
@@ -122,7 +129,8 @@
       chartOnTime: document.getElementById('chart-on-time'),
       chartTickets: document.getElementById('chart-tickets'),
       lateBody: document.getElementById('late-body'),
-      vendors: document.getElementById('vendors-list')
+      vendors: document.getElementById('vendors-list'),
+      themeToggle: document.getElementById('theme-toggle')
     };
 
     var state = {
@@ -287,6 +295,44 @@
       });
     }
 
+    // ---------- Theme ----------
+
+    // A blocked or missing localStorage must not break the dashboard: the theme then
+    // falls back to the default and the choice simply is not remembered.
+    function storedTheme() {
+      try {
+        var value = document.defaultView.localStorage.getItem(THEME_KEY);
+        return value === 'light' || value === 'dark' ? value : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function storeTheme(theme) {
+      try {
+        document.defaultView.localStorage.setItem(THEME_KEY, theme);
+      } catch (e) {
+        // Not remembered; the toggle still works for this page view.
+      }
+    }
+
+    /** Colours live in style.css; the theme is only the data-theme attribute on <html>. */
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      var label = nextTheme(theme) === 'light' ? 'Light theme' : 'Dark theme';
+      els.themeToggle.textContent = label;
+      els.themeToggle.setAttribute('aria-label', 'Switch to the ' + label.toLowerCase());
+    }
+
+    // Dark by default when nothing is stored; the OS colour-scheme setting is ignored (AC-4).
+    applyTheme(storedTheme() || DEFAULT_THEME);
+
+    els.themeToggle.addEventListener('click', function () {
+      var theme = nextTheme(document.documentElement.getAttribute('data-theme'));
+      applyTheme(theme);
+      storeTheme(theme);
+    });
+
     // ---------- Loading ----------
 
     function load(from, to) {
@@ -372,7 +418,8 @@
     formatMoney: formatMoney,
     barWidths: barWidths,
     applyPreset: applyPreset,
-    daysUntil: daysUntil
+    daysUntil: daysUntil,
+    nextTheme: nextTheme
   };
 
   if (typeof module !== 'undefined') {

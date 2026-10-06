@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marlowe &amp; Finch Operations</title>
+  <script>
+    // Apply a stored theme before the first paint, so a refresh never flashes the
+    // default (TODO-231). Dark is the default; app.js owns the toggle.
+    (function () {
+      try {
+        var theme = localStorage.getItem('ops-theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      } catch (e) {
+        // Storage blocked: keep the default.
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,6 +38,8 @@
           <button id="preset-90" class="preset" type="button">90 days</button>
         </div>
       </form>
+
+      <button id="theme-toggle" class="theme-toggle" type="button">Light theme</button>
     </header>
 
     <main>

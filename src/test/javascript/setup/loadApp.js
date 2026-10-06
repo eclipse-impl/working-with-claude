@@ -23,6 +23,7 @@ const REGISTERED_IDS = [
   'range-from',
   'range-to',
   'range-apply',
+  'theme-toggle',
   'preset-7',
   'preset-30',
   'preset-90',

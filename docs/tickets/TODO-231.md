@@ -27,6 +27,9 @@ and label colours of the two SVG charts.
   in the dark theme.
 - **AC-3** The choice is persisted in `localStorage` and restored on load, so a
   refresh keeps the theme the user picked.
+- **AC-4** When nothing is stored in `localStorage`, the dashboard opens in the
+  dark theme, whatever the OS or browser `prefers-color-scheme` setting is. A
+  stored choice always wins over the default.
 
 Fences:
 
@@ -36,7 +39,8 @@ Fences:
 
 ## Open questions
 
-- Default theme when nothing is stored: light, dark, or follow the OS setting?
+- ~~Default theme when nothing is stored: light, dark, or follow the OS setting?~~
+  Resolved: dark by default, OS setting ignored (AC-4).
 
 ## Definition of done
 
