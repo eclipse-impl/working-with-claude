@@ -12,7 +12,7 @@ Rules:
 - Change files under src/test only.
 - Rewrite tests that documented the old behaviour; do not delete them.
 - Add one test per acceptance criterion, plus the edge cases the ticket names.
-- Run `./mvnw test` and `npm test`. Baseline is Java 39 and Jest 52; a count
+- Run `./mvnw test` and `npm test`. Baseline is Java 42 and Jest 52; a count
   below baseline is a failure to investigate, not a pass.
 
 Finish with the two count lines exactly as printed, and a list of the tests you
